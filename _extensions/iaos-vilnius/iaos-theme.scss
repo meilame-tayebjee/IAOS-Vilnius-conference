@@ -1,0 +1,166 @@
+/*-- scss:defaults --*/
+
+// Core colors from the PPTX template
+$iaos-dark:     #1C2228;
+$iaos-blue:     #8BAFCE;
+$iaos-light-bg: #F0F9FF;
+
+$body-bg:    #ffffff;
+$body-color: $iaos-dark;
+$link-color: #2E6DA4;
+
+// Fonts – Calibri stack (exact match on Windows/Mac, graceful fallback elsewhere)
+$font-family-sans-serif:   "Calibri", "Trebuchet MS", "Gill Sans MT", Arial, sans-serif;
+$presentation-heading-font: "Calibri Light", "Calibri", "Trebuchet MS", Arial, sans-serif;
+$presentation-heading-color:       $iaos-dark;
+$presentation-heading-font-weight: 300;
+
+$presentation-font-size-root: 36px;
+$presentation-h1-font-size:   2.0em;
+$presentation-h2-font-size:   0.85em;
+$presentation-h3-font-size:   0.75em;
+
+/*-- scss:rules --*/
+
+// ─── Logo (top-right on every slide) ─────────────────────────────────────────
+// max-height: 2.2rem in footer.css must be overridden to let height take effect
+.reveal .slide-logo {
+  position:   fixed   !important;
+  top:        10px    !important;
+  right:      12px    !important;
+  bottom:     auto    !important;
+  left:       auto    !important;
+  height:     78px    !important;
+  max-height: none    !important;
+  max-width:  320px   !important;
+  width:      auto    !important;
+  z-index:    100;
+}
+
+// ─── Slide number ─────────────────────────────────────────────────────────────
+.reveal .slide-number {
+  font-family: $font-family-sans-serif;
+  font-size:   0.45em;
+  color:       rgba($iaos-dark, 0.5);
+  background:  transparent;
+}
+
+// ─── Title slide ─────────────────────────────────────────────────────────────
+.reveal .slides section.title-slide {
+  text-align: left;
+}
+
+.reveal .slides section.title-slide h1.title {
+  font-size:   1.9em;
+  font-weight: 300;
+  color:       $iaos-dark;
+  margin-top:  0.8em;
+  line-height: 1.15;
+}
+
+.reveal .slides section.title-slide p.subtitle {
+  font-size:   0.7em;
+  color:       rgba($iaos-dark, 0.7);
+  margin-top:  0.3em;
+}
+
+.reveal .slides section.title-slide .quarto-title-authors {
+  margin-top:  1.4em;
+}
+
+.reveal .slides section.title-slide .quarto-title-author-name {
+  font-size:   0.55em;
+  font-weight: 400;
+  color:       $iaos-dark;
+}
+
+.reveal .slides section.title-slide .quarto-title-affiliation,
+.reveal .slides section.title-slide p.date {
+  font-size: 0.48em;
+  color:     rgba($iaos-dark, 0.65);
+}
+
+// ─── Content slides – slide title as a thin header bar ───────────────────────
+.reveal .slides section:not(.title-slide) > h2:first-child {
+  font-size:      0.72em;
+  font-weight:    400;
+  color:          $iaos-dark;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding-bottom: 0.35em;
+  margin-bottom:  0.55em;
+  border-bottom:  1.5px solid rgba($iaos-dark, 0.25);
+}
+
+// ─── Section / chapter divider slides (light background, black title) ────────
+.reveal .slides section.section-divider {
+  background: #ffffff;
+  display:    flex;
+  align-items: center;
+
+  h1 {
+    font-size:     1.8em;
+    font-weight:   300;
+    color:         #000000;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    border-left:   6px solid $iaos-blue;
+    padding-left:  0.5em;
+    line-height:   1.25;
+  }
+}
+
+// ─── Lists ───────────────────────────────────────────────────────────────────
+.reveal .slides section ul,
+.reveal .slides section ol {
+  margin-left: 1.2em;
+
+  li { margin-bottom: 0.35em; }
+}
+
+// ─── Highlight / callout box ─────────────────────────────────────────────────
+.highlight-box {
+  background:    $iaos-light-bg;
+  border-left:   4px solid $iaos-blue;
+  padding:       0.55em 1em;
+  margin:        0.6em 0;
+  border-radius: 0 4px 4px 0;
+  font-size:     0.9em;
+}
+
+// ─── Two-column helper ───────────────────────────────────────────────────────
+.col-left  { float: left;  width: 48%; }
+.col-right { float: right; width: 48%; }
+.clearfix::after { content: ""; display: block; clear: both; }
+
+// ─── Table of Contents / Agenda slide ────────────────────────────────────────
+.reveal .slides section.toc ol {
+  list-style:    none;
+  counter-reset: toc-item;
+  margin-left:   0;
+
+  li {
+    counter-increment: toc-item;
+    display:       flex;
+    align-items:   center;
+    font-size:     0.72em;
+    line-height:   1.4;
+    margin-bottom: 0.65em;
+
+    &::before {
+      content:         counter(toc-item);
+      display:         inline-flex;
+      align-items:     center;
+      justify-content: center;
+      flex-shrink:     0;
+      width:           1.7em;
+      height:          1.7em;
+      margin-right:    0.65em;
+      background:      $iaos-blue;
+      color:           #ffffff;
+      border-radius:   50%;
+      font-weight:     600;
+      font-size:       0.85em;
+    }
+  }
+}

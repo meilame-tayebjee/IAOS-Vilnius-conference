@@ -1,0 +1,28 @@
+---
+title: "Second Talk Title"
+subtitle: "IAOS Vilnius Conference 2026"
+author:
+  - name: "Author Name"
+    affiliation: "Institution / Organisation"
+date: "May 2026"
+format: iaos-vilnius-revealjs
+---
+
+## Agenda {.toc}
+
+1. ...
+2. ...
+
+# Section One {.section}
+
+## Slide Title
+
+Content goes here.
+
+# Thank You {.section}
+
+::: {style="text-align: center; margin-top: 1.5em;"}
+
+**Author Name** · author@institution.org
+
+:::
