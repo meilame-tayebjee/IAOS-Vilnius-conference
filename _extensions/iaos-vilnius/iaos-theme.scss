@@ -15,10 +15,10 @@ $presentation-heading-font: "Calibri Light", "Calibri", "Trebuchet MS", Arial, s
 $presentation-heading-color:       $iaos-dark;
 $presentation-heading-font-weight: 300;
 
-$presentation-font-size-root: 36px;
+$presentation-font-size-root: 30px;
 $presentation-h1-font-size:   2.0em;
-$presentation-h2-font-size:   0.85em;
-$presentation-h3-font-size:   0.75em;
+$presentation-h2-font-size:   1.1em;
+$presentation-h3-font-size:   0.9em;
 
 /*-- scss:rules --*/
 
@@ -82,7 +82,7 @@ $presentation-h3-font-size:   0.75em;
 
 // ─── Content slides – slide title as a thin header bar ───────────────────────
 .reveal .slides section:not(.title-slide) > h2:first-child {
-  font-size:      0.72em;
+  font-size:      1.5em;
   font-weight:    400;
   color:          $iaos-dark;
   text-transform: uppercase;
@@ -143,7 +143,7 @@ $presentation-h3-font-size:   0.75em;
     counter-increment: toc-item;
     display:       flex;
     align-items:   center;
-    font-size:     0.72em;
+    font-size:     1.3em;
     line-height:   1.4;
     margin-bottom: 0.65em;
 
