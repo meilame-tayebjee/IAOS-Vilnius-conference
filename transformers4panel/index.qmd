@@ -1,0 +1,409 @@
+---
+title: "From Panel Data to Token Sequences"
+subtitle: "NLP-inspired Machine Learning for Longitudinal Categorical Data"
+author:
+  - name: "Meilame Tayebjee · Marine Lesur"
+    affiliation: "INSEE · Higher Education Ministerial Statistical Office"
+date: "May 2026"
+format: iaos-vilnius-revealjs
+---
+
+## Agenda {.toc}
+
+1. Why classical methods fall short on administrative trajectories
+2. The key idea — treat sequences of events as text
+3. Three model architectures, in plain terms
+4. Result I — student enrollment pathways (3 million students)
+5. Result II — medical care trajectories (70 million patients)
+6. A new analytical infrastructure for NSIs
+
+# The Problem {.section}
+
+## Millions of individual trajectories, one hard problem
+
+Administrative registers now record every categorical event in millions of lives.
+
+::: {.col-left}
+**What the data look like**
+
+```
+Student A:   L1-Maths → L2-Maths → L3-Maths → M1-Maths
+Student B:   L1-Law   → L2-Law   → re-L1-Law → dropout
+Patient C:   GP visit → Medication → Hospital
+             Jan 2016    Mar 2016     Jun 2016
+Patient D:   Screening → Diagnosis → Chemo → Chemo → …
+```
+
+Individual = **a sequence of categorical events** over time.
+
+Vocabulary: 940 course-types · 7,204 medical codes
+:::
+
+::: {.col-right}
+**Three challenges — all at once**
+
+**① High cardinality**
+Thousands of event types → transition matrices become intractable,
+feature spaces explode.
+
+**② Long-range dependence**
+An event at step 1 shapes outcomes at step 10.
+Markov models cannot capture this.
+
+**③ Irregular timing**
+Events happen at individual-driven intervals.
+Fixed-period panel models are not designed for this.
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+Each challenge has been addressed in isolation. **No existing framework handles all three jointly.** Language model architectures can.
+:::
+
+# The Key Idea {.section}
+
+## Trajectories are sentences — events are words
+
+::: {.col-left}
+**NLP solved this for text**
+
+A sentence = sequence of tokens drawn from a large vocabulary.
+
+Language models learn, directly from data:
+- how words relate (even with 100 000+ distinct words)
+- how context accumulates over long distances
+- how meaning is shaped by position and timing
+
+**No manual feature engineering. No transition matrix.**
+:::
+
+::: {.col-right}
+**Our translation**
+
+| NLP concept | Panel data equivalent |
+|---|---|
+| Word | Event type (course, medical code…) |
+| Sentence | Individual trajectory |
+| Vocabulary | Set of all possible event types |
+| Next-word prediction | Next-event prediction |
+| Sentence embedding | Trajectory summary vector |
+
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+Train a language model on administrative trajectories.
+It learns how events relate, how histories unfold, and — with one extension — how irregular time flows.
+:::
+
+# Three Architectures {.section}
+
+## Ingredient 1 — Token embeddings: discrete → geometry
+
+Every event type is mapped to a dense, learnable vector.
+
+```
+  "L1-Maths"    →  [ 0.31, −0.12,  0.74, … ]  ∈ ℝ^d
+  "L2-Maths"    →  [ 0.29, −0.10,  0.71, … ]  ← close: students move between them
+  "L1-Law"      →  [−0.55,  0.43, −0.20, … ]  ← far: rarely taken in sequence
+  "Cardiology"  →  [ 0.11,  0.88, −0.34, … ]
+```
+
+- **One-hot encoding** gives every event its own independent axis — no notion of similarity.
+- **Learned embeddings** place events that co-occur in trajectories close together, automatically.
+- Works for any vocabulary size. No transition matrix needed.
+
+::: {.highlight-box}
+The embedding matrix is the first layer in every model below. The architectures differ in *how they process the sequence* once events are embedded.
+:::
+
+## Ingredient 2 — Sequential vs. parallel processing
+
+::: {.col-left}
+**RNNs (GRU / LSTM) — rolling memory**
+
+```
+Event 1 → Event 2 → Event 3 → predict?
+  [h₁] ──→ [h₂] ──→  [h₃]  ──→  output
+```
+
+At each step: compress all past history into a single hidden state **h**.
+
+**✓** Natural, chronological flow — lightweight on short sequences
+
+**✗** Early events fade from memory · No parallelisation
+:::
+
+::: {.col-right}
+**Transformers — attention over full history**
+
+```
+Event 1  ─┐
+Event 2  ─┼──→  every event attends to all past events  ──→  output
+Event 3  ─┘       (in a single parallel pass)
+```
+
+At each position: compute a relevance score to every prior event, update the representation as a weighted average.
+
+**✓** Perfect long-range memory · Full parallelisation
+
+**✗** Needs more data · Slower on very short sequences
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+**Rule of thumb used in this paper:** short, regular sequences (≤ 8 steps) → GRU.
+Large-scale, irregular, long sequences → Transformer.
+:::
+
+## Ingredient 3 — Adding continuous time
+
+Standard models treat all steps as equally spaced. **Medical data are not.**
+
+::: {.col-left}
+**Two additions**
+
+**① Time embeddings (Time2Vec)**
+The timestamp of each event is encoded as a learned vector
+added to the token embedding.
+→ The model knows *when* an event happened, not only *what*.
+
+**② Joint time prediction (Delphi loss)**
+At each step, predict both:
+- the **type** of the next event (cross-entropy)
+- the **expected waiting time** (exponential likelihood)
+
+The predicted delay is driven by the full trajectory history at that point.
+:::
+
+::: {.col-right}
+**Why it matters**
+
+```
+Patient A:  Heart failure → [3 days]  → Cardiology
+Patient B:  Heart failure → [6 months] → Cardiology
+```
+
+Same events. Very different clinical stories.
+
+The time gap *is* information.
+The model learns to predict shorter waits after acute events.
+
+Before calibration: model overestimates short delays.
+After **temperature scaling**: predicted and observed means align.
+:::
+
+::: {.clearfix}
+:::
+
+# Result I — Student Pathways {.section}
+
+## 3 million students, 940 course-types, one GRU
+
+::: {.col-left}
+**Data**
+
+- ~3 million students, *baccalauréat* cohorts 2017–2022
+- ~10 million enrollment records
+- Vocabulary: **940 course-types** (L1 bachelor → PhD)
+- Sequence length: up to **8** (one per academic year)
+- Covariates: gender, age, bac grade & specialty, parental SPC, school Social Positioning Index, geographic origin
+:::
+
+::: {.col-right}
+**Model**
+
+- **GRU** — right fit for short, regular sequences
+- ~3 million parameters
+- Covariates embedded and summed to initialise the hidden state
+- Standard cross-entropy loss (yearly gaps are constant — no time extension needed)
+- Best model selected on 500k held-out students
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+At this scale and vocabulary size (940 classes), standard regression, ensemble, and boosting methods were **not trainable**. Sequence models are the only viable option.
+:::
+
+## Going beyond inertia
+
+**Baseline:** a bigram that predicts the next enrollment from the current one only.
+No covariates, no history. A direct measure of how much *inertia* explains.
+
+| Model | Top-1 | Top-3 | Top-5 |
+|---|:-:|:-:|:-:|
+| Bigram — inertia only | 62.3 % | 79.7 % | 83.9 % |
+| GRU | **66.7 %** | **82.8 %** | **86.6 %** |
+
+*(Accuracy on the test set of 600k students, excluding the first enrollment which the bigram cannot predict.)*
+
+::: {.highlight-box}
+Most students continue on the same track — inertia is already a strong signal. The GRU improves by combining **full trajectory history** with **covariate information** (parental background, school SPI…).
+
+This makes the model directly policy-relevant: we can estimate the marginal effect of social background on transition probabilities — and the hidden states **h** are compact trajectory embeddings ready for clustering, matching, and typology construction.
+:::
+
+# Result II — Medical Pathways {.section}
+
+## The entire French population's health history
+
+::: {.col-left}
+**Data — SNDS (National Health Database)**
+
+- **70 million** patients covered
+- **8 billion** medical events
+- **7,204 token** vocabulary:
+
+| Event family | Tokens |
+|---|:-:|
+| Specialty consultations | 83 |
+| Clinical procedures (CCAM) | 936 |
+| Medications (ATC) | 704 |
+| Hospital diagnoses (ICD-10) | 3 275 |
+| Admissions, emergencies, deaths | — |
+
+- Irregular timestamps: multiple events per day possible, or none for months
+:::
+
+::: {.col-right}
+**Model**
+
+- **Transformer** — right fit for large scale + irregular time
+- Time-aware: Time2Vec embeddings + Delphi loss
+- Jointly predicts at each step:
+  - **Type** of the next medical event
+  - **Expected waiting time** until it occurs
+- Gender and birth year prepended as context
+
+**Scale check**
+
+Validation loss drops sharply with both model size and training set size, before reaching a plateau — confirming the dataset saturates this architecture rather than the reverse.
+:::
+
+## The model discovers the map of medicine — unsupervised
+
+The Transformer learns a 256-dimensional vector for each of the 7,204 medical tokens,
+**with no clinical labels**. Projecting to 2D (UMAP):
+
+```
+  [Obstetrics] · · [Senology]
+       ·                ·
+  [Gynecology]      [Oncology] · ·
+                           ·
+  [Ophthalmology]   [Emergency] · [Trauma codes]
+        · ·
+  [Urology] · · ·   [Cardiology] · · ·
+                ·
+  [Dentistry]     [Psychiatry]
+```
+
+- **Clinically coherent clusters** form purely from trajectory co-occurrence
+- **Higher-order structure** is preserved: gynecology sits adjacent to senology;
+  emergency neighbors trauma codes
+- The model has internalized the **logic of care pathways**, not merely memorized token pairs
+
+::: {.highlight-box}
+This structured geometry emerges without any supervision — it is entirely a product of learning to predict the next event in 8 billion medical records.
+:::
+
+## Zero-shot predictions rival supervised models
+
+**Task (unseen during training):** given a random point in a patient's trajectory, predict whether a specific event occurs within 30 / 180 / 365 days.
+
+::: {.col-left}
+**Three approaches compared**
+
+- **Naïve baseline:** logistic regression on age and gender only
+- **Logistic on embeddings:** trained on **100k** patients
+- **Zero-shot:** model's output logits, no additional training at all
+
+Evaluated on **1 million** held-out patients.
+:::
+
+::: {.col-right}
+**Results**
+
+Zero-shot is **competitive with the supervised approach** trained on 100k patients.
+
+Large gains for history-driven events:
+dialysis, chemotherapy → model captures the clinical logic.
+
+Modest but consistent gains for unpredictable events:
+emergency presentations → even here, history adds signal.
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+The model has learned a **transferable encoding of medical history**.
+It generalises to tasks it was never trained on — with **no labelled data required**.
+:::
+
+# A New Infrastructure for NSIs {.section}
+
+## More than a predictor — a reusable analytical backbone
+
+::: {.col-left}
+**What we have shown**
+
+✓ Sequence models handle high cardinality, long-range dependence, and irregular timing **jointly** — no classical method does
+
+✓ Trained on raw administrative data, they learn **structured, semantically meaningful representations** of individual histories
+
+✓ These representations **transfer to downstream tasks unseen during training**, without retraining
+:::
+
+::: {.col-right}
+**The institutional opportunity**
+
+One model, pre-trained on a national register, serves as a **shared backbone**:
+
+- Policy evaluation and associative studies
+- Subgroup characterisation and matching
+- Control variables for causal inference
+- *(Future work)* Privacy-preserving synthetic trajectory generation
+
+**One model. Many research questions. Lower barrier to entry for every team.**
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+**Governance is not optional.** Pre-trained pathway models need the same standards as official statistics: documented training data, versioning, auditability, and strict access controls on individual-level embeddings — before any dissemination.
+:::
+
+## What to bring back from this talk
+
+| Challenge | Our answer |
+|---|---|
+| High-cardinality categorical states | Token embeddings — learned geometry, no manual mapping |
+| Long-range path dependence | Transformers — direct attention across the full history |
+| Irregular event timing | Time2Vec + Delphi loss — continuous time baked into training |
+| Scalability | Trained end-to-end on billions of raw records, no feature engineering |
+| Reusability across research teams | Pre-trained pathway model as shared NSI infrastructure |
+
+::: {.highlight-box}
+**The shift:** from one model per research question, to one pre-trained model serving many — the same transition NLP made a decade ago, now applied to the structured administrative data NSIs already hold at scale.
+:::
+
+# Thank You {.section}
+
+::: {style="text-align: center; margin-top: 1.5em;"}
+
+**Meilame Tayebjee** · meilame.tayebjee@insee.fr
+
+**Marine Lesur** · marine.lesur@ens-paris-saclay.fr
+
+*Submitted to the 2026 IAOS Young Statistician Prize*
+
+:::
