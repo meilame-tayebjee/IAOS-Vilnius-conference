@@ -15,7 +15,7 @@ $presentation-heading-font: "Calibri Light", "Calibri", "Trebuchet MS", Arial, s
 $presentation-heading-color:       $iaos-dark;
 $presentation-heading-font-weight: 300;
 
-$presentation-font-size-root: 30px;
+$presentation-font-size-root: 32px;
 $presentation-h1-font-size:   2.0em;
 $presentation-h2-font-size:   1.1em;
 $presentation-h3-font-size:   0.9em;
@@ -92,9 +92,8 @@ $presentation-h3-font-size:   0.9em;
   border-bottom:  1.5px solid rgba($iaos-dark, 0.25);
 }
 
-// ─── Section / chapter divider slides (light background, black title) ────────
+// ─── Section / chapter divider slides (title background image, dark title) ───
 .reveal .slides section.section-divider {
-  background: #ffffff;
   display:    flex;
   align-items: center;
 
@@ -108,6 +107,12 @@ $presentation-h3-font-size:   0.9em;
     padding-left:  0.5em;
     line-height:   1.25;
   }
+}
+
+// ─── Images ──────────────────────────────────────────────────────────────────
+.reveal .slides section img {
+  max-width: none;
+  max-height: none;
 }
 
 // ─── Lists ───────────────────────────────────────────────────────────────────
@@ -125,7 +130,42 @@ $presentation-h3-font-size:   0.9em;
   padding:       0.55em 1em;
   margin:        0.6em 0;
   border-radius: 0 4px 4px 0;
-  font-size:     0.9em;
+  font-size:     1em;
+}
+
+// ─── Warning / alert box ─────────────────────────────────────────────────────
+.warning-box {
+  background:    #fff5f5;
+  border-left:   4px solid #c0392b;
+  padding:       0.55em 1em;
+  margin:        0.6em 0;
+  border-radius: 0 4px 4px 0;
+  font-size:     1em;
+  color:         #7b1e1e;
+}
+
+// ─── Key-message slide ────────────────────────────────────────────────────────
+.key-message {
+  background:    $iaos-light-bg;
+  border-top:    5px solid $iaos-blue;
+  border-radius: 6px;
+  padding:       1.6em 2.2em;
+  margin:        2.8em auto;
+  max-width:     75%;
+  font-size:     1.25em;
+  line-height:   1.65;
+  text-align:    center;
+  box-shadow:    0 4px 18px rgba(139, 175, 206, 0.28);
+
+  .key-label {
+    display:        block;
+    color:          $iaos-blue;
+    font-size:      0.65em;
+    font-weight:    600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    margin-bottom:  0.8em;
+  }
 }
 
 // ─── Two-column helper ───────────────────────────────────────────────────────

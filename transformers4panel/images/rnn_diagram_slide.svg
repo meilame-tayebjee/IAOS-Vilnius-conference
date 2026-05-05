@@ -1,0 +1,256 @@
+<svg width="100%" viewBox="0 0 720 640" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <style>
+    text { font-family: Arial, sans-serif; fill: #444441; }
+    .th  { font-size: 11px; font-weight: 600; }
+    .ts  { font-size: 10px; font-weight: 400; fill: #5F5E5A; }
+    .arr { stroke: #888780; stroke-width: 1; fill: none; }
+    .c-teal rect  { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 1; }
+    .c-teal .th { fill: #085041; }
+    .c-teal .ts { fill: #0F6E56; }
+    .c-amber rect { fill: #FAEEDA; stroke: #854F0B; stroke-width: 1; }
+    .c-amber .th { fill: #633806; }
+    .c-amber .ts { fill: #854F0B; }
+    .c-purple rect { fill: #EEEDFE; stroke: #534AB7; stroke-width: 1; }
+    .c-purple .th { fill: #3C3489; }
+    .c-purple .ts { fill: #534AB7; }
+    .c-blue rect   { fill: #E6F1FB; stroke: #185FA5; stroke-width: 1; }
+    .c-blue .th { fill: #0C447C; }
+    .c-blue .ts { fill: #185FA5; }
+    .c-coral rect  { fill: #FAECE7; stroke: #993C1D; stroke-width: 1; }
+    .c-coral .th { fill: #712B13; }
+    .target rect { fill: none; stroke: #888780; stroke-width: 1; stroke-dasharray: 3 2; }
+    .target .th { fill: #444441; }
+  </style>
+</defs>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION A – COVARIATES                         -->
+<!-- ══════════════════════════════════════════════ -->
+<text class="ts" x="40" y="18">① Student covariates (fixed, computed once)</text>
+
+<g class="c-teal"><rect x="40" y="24" width="134" height="26" rx="3"/>
+  <text class="th" x="107" y="37" text-anchor="middle" dominant-baseline="central">Gender</text></g>
+<g class="c-teal"><rect x="40" y="54" width="134" height="26" rx="3"/>
+  <text class="th" x="107" y="67" text-anchor="middle" dominant-baseline="central">Age (binned)</text></g>
+<g class="c-teal"><rect x="40" y="84" width="134" height="26" rx="3"/>
+  <text class="th" x="107" y="97" text-anchor="middle" dominant-baseline="central">Bac grade &amp; specialty</text></g>
+<g class="c-teal"><rect x="40" y="114" width="134" height="26" rx="3"/>
+  <text class="th" x="107" y="127" text-anchor="middle" dominant-baseline="central">Parental SPC</text></g>
+<g class="c-teal"><rect x="40" y="144" width="134" height="26" rx="3"/>
+  <text class="th" x="107" y="157" text-anchor="middle" dominant-baseline="central">School SPI</text></g>
+<g class="c-teal"><rect x="40" y="174" width="134" height="26" rx="3"/>
+  <text class="th" x="107" y="187" text-anchor="middle" dominant-baseline="central">Geographic origin</text></g>
+
+<line x1="174" y1="37"  x2="196" y2="37"  class="arr" marker-end="url(#arrow)"/>
+<line x1="174" y1="67"  x2="196" y2="67"  class="arr" marker-end="url(#arrow)"/>
+<line x1="174" y1="97"  x2="196" y2="97"  class="arr" marker-end="url(#arrow)"/>
+<line x1="174" y1="127" x2="196" y2="127" class="arr" marker-end="url(#arrow)"/>
+<line x1="174" y1="157" x2="196" y2="157" class="arr" marker-end="url(#arrow)"/>
+<line x1="174" y1="187" x2="196" y2="187" class="arr" marker-end="url(#arrow)"/>
+
+<g class="c-teal">
+  <rect x="196" y="24" width="96" height="176" rx="3"/>
+  <text class="th" x="244" y="104" text-anchor="middle" dominant-baseline="central">Covariate</text>
+  <text class="th" x="244" y="118" text-anchor="middle" dominant-baseline="central">embeddings</text>
+  <text class="ts" x="244" y="134" text-anchor="middle" dominant-baseline="central">one vector each</text>
+  <text class="ts" x="244" y="147" text-anchor="middle" dominant-baseline="central">(binned → token)</text>
+</g>
+
+<line x1="292" y1="112" x2="314" y2="112" class="arr" marker-end="url(#arrow)"/>
+<circle cx="326" cy="112" r="14" fill="none" stroke="#888780" stroke-width="1"/>
+<text class="th" x="326" y="112" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Σ</text>
+<text class="ts" x="326" y="134" text-anchor="middle">sum</text>
+
+<line x1="340" y1="112" x2="372" y2="112" class="arr" marker-end="url(#arrow)"/>
+
+<g class="c-purple">
+  <rect x="372" y="96" width="108" height="42" rx="3"/>
+  <text class="th" x="426" y="113" text-anchor="middle" dominant-baseline="central">h₀</text>
+  <text class="ts" x="426" y="127" text-anchor="middle" dominant-baseline="central">initial hidden state</text>
+</g>
+<text class="ts" x="426" y="148" text-anchor="middle">↓ passed to RNN cell t = 1</text>
+
+<!-- h0 → Linear+Softmax -->
+<line x1="480" y1="112" x2="514" y2="112" class="arr" marker-end="url(#arrow)"/>
+<g class="c-blue">
+  <rect x="514" y="90" width="76" height="46" rx="3"/>
+  <text class="th" x="552" y="107" text-anchor="middle" dominant-baseline="central">Linear</text>
+  <text class="ts" x="552" y="119" text-anchor="middle" dominant-baseline="central">+</text>
+  <text class="th" x="552" y="130" text-anchor="middle" dominant-baseline="central">Softmax</text>
+</g>
+<text class="ts" x="552" y="146" text-anchor="middle">↓ target:</text>
+<g class="target">
+  <rect x="516" y="150" width="72" height="22" rx="3"/>
+  <text class="th" x="552" y="161" text-anchor="middle" dominant-baseline="central">L1 Maths</text>
+</g>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- DIVIDER                                        -->
+<!-- ══════════════════════════════════════════════ -->
+<line x1="40" y1="214" x2="700" y2="214" stroke="#B4B2A9" stroke-width="0.5" stroke-dasharray="4 4"/>
+<text class="ts" x="40" y="226">② Sequence processing — RNN unrolled over time (one cell per academic year)</text>
+
+<text class="ts" x="40" y="240">Example student pathway:</text>
+
+<!-- Input tokens -->
+<g class="c-coral">
+  <rect x="40" y="246" width="106" height="32" rx="3"/>
+  <text class="th" x="93" y="258" text-anchor="middle" dominant-baseline="central">L1 Maths</text>
+  <text class="ts" x="93" y="271" text-anchor="middle" dominant-baseline="central">2018 (t = 1)</text>
+</g>
+<g class="c-coral">
+  <rect x="210" y="246" width="106" height="32" rx="3"/>
+  <text class="th" x="263" y="258" text-anchor="middle" dominant-baseline="central">L2 Maths</text>
+  <text class="ts" x="263" y="271" text-anchor="middle" dominant-baseline="central">2019 (t = 2)</text>
+</g>
+<g class="c-coral">
+  <rect x="380" y="246" width="106" height="32" rx="3"/>
+  <text class="th" x="433" y="258" text-anchor="middle" dominant-baseline="central">L3 Maths</text>
+  <text class="ts" x="433" y="271" text-anchor="middle" dominant-baseline="central">2020 (t = 3)</text>
+</g>
+
+<line x1="146" y1="262" x2="208" y2="262" class="arr" marker-end="url(#arrow)"/>
+<line x1="316" y1="262" x2="378" y2="262" class="arr" marker-end="url(#arrow)"/>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- STEP t=1                                       -->
+<!-- ══════════════════════════════════════════════ -->
+<g class="c-amber">
+  <rect x="40" y="290" width="106" height="26" rx="3"/>
+  <text class="th" x="93" y="303" text-anchor="middle" dominant-baseline="central">Year emb. 2018</text>
+</g>
+<g class="c-amber">
+  <rect x="40" y="322" width="106" height="32" rx="3"/>
+  <text class="th" x="93" y="334" text-anchor="middle" dominant-baseline="central">Course-type emb.</text>
+  <text class="ts" x="93" y="347" text-anchor="middle" dominant-baseline="central">L1 Maths</text>
+</g>
+
+<!-- angled from year emb, straight from course-type -->
+<line x1="146" y1="303" x2="204" y2="338" class="arr" marker-end="url(#arrow)"/>
+<line x1="146" y1="338" x2="204" y2="338" class="arr" marker-end="url(#arrow)"/>
+
+<circle cx="218" cy="338" r="14" fill="none" stroke="#888780" stroke-width="1"/>
+<text class="th" x="218" y="338" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+</text>
+
+<!-- h0 horizontal into sum -->
+<line x1="426" y1="338" x2="232" y2="338" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="336" y="330">h₀</text>
+
+<line x1="232" y1="338" x2="258" y2="338" class="arr" marker-end="url(#arrow)"/>
+
+<g class="c-purple">
+  <rect x="258" y="320" width="130" height="38" rx="3"/>
+  <text class="th" x="323" y="335" text-anchor="middle" dominant-baseline="central">RNN cell  t = 1</text>
+  <text class="ts" x="323" y="349" text-anchor="middle" dominant-baseline="central">(RNN / LSTM / GRU)</text>
+</g>
+
+<line x1="388" y1="338" x2="416" y2="338" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="402" y="330">h₁</text>
+
+<g class="c-blue">
+  <rect x="416" y="316" width="76" height="46" rx="3"/>
+  <text class="th" x="454" y="333" text-anchor="middle" dominant-baseline="central">Linear</text>
+  <text class="ts" x="454" y="345" text-anchor="middle" dominant-baseline="central">+</text>
+  <text class="th" x="454" y="357" text-anchor="middle" dominant-baseline="central">Softmax</text>
+</g>
+
+<text class="ts" x="516" y="328">target:</text>
+<g class="target">
+  <rect x="506" y="332" width="72" height="22" rx="3"/>
+  <text class="th" x="542" y="343" text-anchor="middle" dominant-baseline="central">L2 Maths</text>
+</g>
+
+<!-- h1 dashed straight down from bottom of RNN t=1 to top of RNN t=2 -->
+<line x1="323" y1="358" x2="323" y2="452" stroke="#888780" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+<text class="ts" x="331" y="408">h₁</text>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- STEP t=2                                       -->
+<!-- ══════════════════════════════════════════════ -->
+<text class="ts" x="40" y="408">Same operations at t = 2:</text>
+
+<g class="c-amber">
+  <rect x="40" y="414" width="106" height="26" rx="3"/>
+  <text class="th" x="93" y="427" text-anchor="middle" dominant-baseline="central">Year emb. 2019</text>
+</g>
+<g class="c-amber">
+  <rect x="40" y="446" width="106" height="32" rx="3"/>
+  <text class="th" x="93" y="458" text-anchor="middle" dominant-baseline="central">Course-type emb.</text>
+  <text class="ts" x="93" y="471" text-anchor="middle" dominant-baseline="central">L2 Maths</text>
+</g>
+
+<line x1="146" y1="427" x2="204" y2="462" class="arr" marker-end="url(#arrow)"/>
+<line x1="146" y1="462" x2="204" y2="462" class="arr" marker-end="url(#arrow)"/>
+
+<circle cx="218" cy="462" r="14" fill="none" stroke="#888780" stroke-width="1"/>
+<text class="th" x="218" y="462" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+</text>
+
+<line x1="232" y1="462" x2="258" y2="462" class="arr" marker-end="url(#arrow)"/>
+
+<g class="c-purple">
+  <rect x="258" y="444" width="130" height="38" rx="3"/>
+  <text class="th" x="323" y="459" text-anchor="middle" dominant-baseline="central">RNN cell  t = 2</text>
+  <text class="ts" x="323" y="473" text-anchor="middle" dominant-baseline="central">(RNN / LSTM / GRU)</text>
+</g>
+
+<line x1="388" y1="462" x2="416" y2="462" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="402" y="454">h₂</text>
+
+<g class="c-blue">
+  <rect x="416" y="440" width="76" height="46" rx="3"/>
+  <text class="th" x="454" y="457" text-anchor="middle" dominant-baseline="central">Linear</text>
+  <text class="ts" x="454" y="469" text-anchor="middle" dominant-baseline="central">+</text>
+  <text class="th" x="454" y="481" text-anchor="middle" dominant-baseline="central">Softmax</text>
+</g>
+
+<text class="ts" x="516" y="452">target:</text>
+<g class="target">
+  <rect x="506" y="456" width="72" height="22" rx="3"/>
+  <text class="th" x="542" y="467" text-anchor="middle" dominant-baseline="central">L3 Maths</text>
+</g>
+
+<text class="ts" x="40" y="508">   …  (repeated for each year in the sequence, up to t = 8)</text>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION C – OUTPUT                             -->
+<!-- ══════════════════════════════════════════════ -->
+<line x1="40" y1="516" x2="700" y2="516" stroke="#B4B2A9" stroke-width="0.5" stroke-dasharray="4 4"/>
+<text class="ts" x="40" y="528">③ Output at each step — probability over the 940 possible next enrolments</text>
+
+<g class="c-blue">
+  <rect x="40" y="534" width="618" height="40" rx="3"/>
+  <text class="th" x="349" y="549" text-anchor="middle" dominant-baseline="central">P(next course-type | past trajectory, covariates)</text>
+  <text class="ts" x="349" y="563" text-anchor="middle" dominant-baseline="central">vector of 940 probabilities — trained with cross-entropy loss against observed next enrolment</text>
+</g>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- LEGEND                                         -->
+<!-- ══════════════════════════════════════════════ -->
+<line x1="40" y1="588" x2="700" y2="588" stroke="#B4B2A9" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+<g class="c-teal"><rect x="40" y="596" width="11" height="11" rx="2"/></g>
+<text class="ts" x="56" y="606">Covariates</text>
+
+<g class="c-amber"><rect x="132" y="596" width="11" height="11" rx="2"/></g>
+<text class="ts" x="148" y="606">Embeddings</text>
+
+<g class="c-purple"><rect x="230" y="596" width="11" height="11" rx="2"/></g>
+<text class="ts" x="246" y="606">Hidden states / RNN</text>
+
+<g class="c-blue"><rect x="360" y="596" width="11" height="11" rx="2"/></g>
+<text class="ts" x="376" y="606">Output (Linear+Softmax)</text>
+
+<g class="c-coral"><rect x="510" y="596" width="11" height="11" rx="2"/></g>
+<text class="ts" x="526" y="606">Observed tokens</text>
+
+<g class="target"><rect x="40" y="617" width="11" height="11" rx="2"/></g>
+<text class="ts" x="56" y="627">Targets</text>
+
+<line x1="120" y1="622" x2="152" y2="622" stroke="#888780" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+<text class="ts" x="158" y="627">Hidden state passed to next step</text>
+
+</svg>

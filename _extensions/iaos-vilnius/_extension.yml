@@ -14,6 +14,7 @@ contributes:
       show-slide-number: all
       transition: fade
       background-transition: fade
+      scrollable: true
       title-slide-attributes:
         data-background-image: images/bg-title.png
         data-background-size: cover
