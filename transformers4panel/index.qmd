@@ -71,9 +71,9 @@ Each challenge has been addressed in isolation. **No existing framework handles 
 
 A sentence is a sequence of **tokens** drawn from a large vocabulary.
 
-Deep-learning language models learn directly from data, via **embeddings**:
+Deep-learning language models learn directly from data:
 
-- how tokens relate to one another without manual feature engineering
+- how tokens relate to one another, via **embeddings**, without manual feature engineering
 - scaling to millions of entries and vocabularies of thousands
 - to model **long-range dependencies**: context from early tokens shapes predictions arbitrarily far ahead
 
@@ -111,7 +111,7 @@ Every event type is mapped to a dense, learnable vector.
 
 ## 2 — From Token Embeddings to Sequence Embeddings 
 
-We want to get $h_c$, a vector summarizing the past up to position $c$
+We want to get $h_c$, a vector summarizing the past up to position $c$.
 
 ::: {style="text-align: center;"}
 **RNNs (GRU / LSTM) — rolling memory**
@@ -296,10 +296,10 @@ Language models are pre-trained on the **Next-Token Prediction** task — predic
 
 **Why this works so well:**
 
-- Requires no labeled data — the text itself is the supervision
+- Requires no labeled data — the sequence itself is the supervision
 - Performance scales reliably with more data and compute
 - Produces rich, transferable representations encoding transition structure
-- The dominant pre-training objective for autoregressive models (GPT family, etc.)
+- It is the dominant pre-training objective for autoregressive models (GPT family, etc.)
 
 To have time-aware models, we add a **Time-to-Next-Event** task (see [@shmatkoLearningNaturalHistory2025]).
 
@@ -461,7 +461,7 @@ One model, pre-trained on a national register, serves as a **shared backbone**:
 - Policy evaluation and associative studies
 - Subgroup characterisation and matching
 - Control variables for causal inference
-- **Synthetic data generatioin**
+- **Synthetic data generation**
 
 **One model. Many research questions. Lower barrier to entry for research teams.**
 
