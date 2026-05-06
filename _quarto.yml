@@ -7,7 +7,7 @@ project:
     - transformers4panel/index.qmd
 
 website:
-  page-navigation: false
+  page-navigation: true
   title: "IAOS Vilnius 2026 — Presentations"
   site-url: https://meilame-tayebjee.github.io/IAOS-Vilnius-conference
   repo-url: https://github.com/meilame-tayebjee/IAOS-Vilnius-conference
