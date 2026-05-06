@@ -226,3 +226,4 @@ __marimo__/
 **/*.quarto_ipynb
 
 /.luarc.json
+_site/

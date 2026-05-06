@@ -1,0 +1,10 @@
+---
+title: "From Panel Data to Token Sequences"
+subtitle: "NLP-inspired Machine Learning for Longitudinal Categorical Data"
+date: "2026-05-12"
+author: "Meilame Tayebjee (INSEE)"
+slides:
+  text: Slides
+  url: /transformers4panel/index.html
+order: 1
+---

@@ -1,2 +1,21 @@
 project:
-  type: default
+  type: website
+  render:
+    - index.qmd
+    - cards/*.qmd
+    - accuracy2trust/index.qmd
+    - transformers4panel/index.qmd
+
+website:
+  page-navigation: false
+  title: "IAOS Vilnius 2026 — Presentations"
+  repo-url: https://github.com/meilame-tayebjee/IAOS-Vilnius-conference
+  repo-branch: main
+  navbar:
+    right:
+      - icon: github
+        href: "https://github.com/meilame-tayebjee/IAOS-Vilnius-conference"
+        aria-label: GitHub
+
+execute:
+  freeze: true
