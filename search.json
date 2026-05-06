@@ -1,0 +1,205 @@
+[
+  {
+    "objectID": "transformers4panel/index.html#agenda",
+    "href": "transformers4panel/index.html#agenda",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Agenda",
+    "text": "Agenda\n\nWhy classical methods fall short on administrative trajectories\nThe key idea: use language model architectures for sequences of events\nLanguage models: behind the scenes\nResult I: student enrollment pathways\nResult II: medical care trajectories\nA new analytical infrastructure for NSIs"
+  },
+  {
+    "objectID": "transformers4panel/index.html#millions-of-individual-trajectories-one-hard-problem",
+    "href": "transformers4panel/index.html#millions-of-individual-trajectories-one-hard-problem",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Millions of individual trajectories, one hard problem",
+    "text": "Millions of individual trajectories, one hard problem\nMany administrative registers track millions of individual trajectories, in the form of categorical panel data:"
+  },
+  {
+    "objectID": "transformers4panel/index.html#three-challenges-all-at-once",
+    "href": "transformers4panel/index.html#three-challenges-all-at-once",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Three challenges, all at once",
+    "text": "Three challenges, all at once\n\nHigh cardinality Thousands of event types → transition matrices become intractable, feature spaces explode.\nLong-range dependence An event at step 1 shapes outcomes at step 10. Markov models cannot capture this.\nIrregular timing Events happen at individual-driven intervals. Fixed-period panel models are not designed for this.\n\n\n\n\n\nEach challenge has been addressed in isolation (D’Haultfoeuille and Iaria 2016; Rust 1988). No existing framework handles all three jointly. Language model architectures can."
+  },
+  {
+    "objectID": "transformers4panel/index.html#language-models-solved-those-issues-for-text",
+    "href": "transformers4panel/index.html#language-models-solved-those-issues-for-text",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Language models solved those issues for text…",
+    "text": "Language models solved those issues for text…\nA sentence is a sequence of tokens drawn from a large vocabulary.\nDeep-learning language models learn directly from data:\n\nhow tokens relate to one another, via embeddings, without manual feature engineering\nscaling to millions of entries and vocabularies of thousands\nto model long-range dependencies: context from early tokens shapes predictions arbitrarily far ahead"
+  },
+  {
+    "objectID": "transformers4panel/index.html#and-categorical-panel-data-resembles-text",
+    "href": "transformers4panel/index.html#and-categorical-panel-data-resembles-text",
+    "title": "From Panel Data to Token Sequences",
+    "section": "… and categorical panel data resembles text!",
+    "text": "… and categorical panel data resembles text!\n\n\n\nNLP concept\nPanel data equivalent\n\n\n\n\nWord / Token\nEvent type (course, medical code…)\n\n\nSentence\nIndividual trajectory\n\n\nVocabulary\nSet of all possible event types\n\n\nNext-word prediction\nNext-event prediction\n\n\nSentence embedding\nTrajectory summary vector"
+  },
+  {
+    "objectID": "transformers4panel/index.html#overview",
+    "href": "transformers4panel/index.html#overview",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Overview",
+    "text": "Overview"
+  },
+  {
+    "objectID": "transformers4panel/index.html#token-embeddings-discrete-geometry",
+    "href": "transformers4panel/index.html#token-embeddings-discrete-geometry",
+    "title": "From Panel Data to Token Sequences",
+    "section": "1 — Token embeddings: discrete → geometry",
+    "text": "1 — Token embeddings: discrete → geometry\nEvery event type is mapped to a dense, learnable vector.\n\n\nOne-hot encoding gives every event its own independent axis: no notion of similarity.\nLearned embeddings place events that co-occur in trajectories close together, automatically."
+  },
+  {
+    "objectID": "transformers4panel/index.html#from-token-embeddings-to-sequence-embeddings",
+    "href": "transformers4panel/index.html#from-token-embeddings-to-sequence-embeddings",
+    "title": "From Panel Data to Token Sequences",
+    "section": "2 — From Token Embeddings to Sequence Embeddings",
+    "text": "2 — From Token Embeddings to Sequence Embeddings\nWe want to get \\(h_c\\), a vector summarizing the past up to position \\(c\\).\n\nRNNs (GRU / LSTM) — rolling memory (Schmidt 2019)\n\n\n✓ Lightweight, easy to train\n✗ but sequential processing implies slowness and vanishing information for long sequences"
+  },
+  {
+    "objectID": "transformers4panel/index.html#pre-training",
+    "href": "transformers4panel/index.html#pre-training",
+    "title": "From Panel Data to Token Sequences",
+    "section": "3 — Pre-training",
+    "text": "3 — Pre-training\nLanguage models are pre-trained on the Next-Token Prediction task — predicting the next event given all previous events.\nWhy this works so well:\n\nRequires no labeled data — the sequence itself is the supervision\nPerformance scales reliably with more data and compute\nProduces rich, transferable representations encoding transition structure\nIt is the dominant pre-training objective for autoregressive models (GPT family, etc.)\n\nTo have time-aware models, we add a Time-to-Next-Event task (see (Shmatko et al. 2025))."
+  },
+  {
+    "objectID": "transformers4panel/index.html#million-students-940-course-types-one-gru",
+    "href": "transformers4panel/index.html#million-students-940-course-types-one-gru",
+    "title": "From Panel Data to Token Sequences",
+    "section": "3 million students, 940 course-types, one GRU",
+    "text": "3 million students, 940 course-types, one GRU\nData\n\n~3 million students, baccalauréat cohorts 2017–2022\n~10 million enrollment records\nVocabulary: 940 course-types (L1 bachelor → PhD)\nSequence length: up to 8 (one per academic year)\nCovariates: gender, age, bac grade & specialty, parental SPC, school Social Positioning Index, geographic origin\n\n\n\n\n\nAt this scale and vocabulary size (940 classes), standard regression, ensemble, and boosting methods were not trainable. Sequence models are the only viable option."
+  },
+  {
+    "objectID": "transformers4panel/index.html#pipeline",
+    "href": "transformers4panel/index.html#pipeline",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Pipeline",
+    "text": "Pipeline"
+  },
+  {
+    "objectID": "transformers4panel/index.html#predictive-power",
+    "href": "transformers4panel/index.html#predictive-power",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Predictive power",
+    "text": "Predictive power\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nModel\nTop-1 Accuracy\nTop-3 Accuracy\nTop-5 Accuracy\nTop-1 Acc. excl. 1st enrol. pred.\nTop-3 Acc. excl. 1st enrol. pred.\nTop-5 Acc. excl. 1st enrol. pred.\n\n\n\n\nBigram model\nN.A.\nN.A.\nN.A.\n62.34 %\n79.65 %\n83.86 %\n\n\nRNN (GRU)\n54.01 %\n71.24 %\n77.10 %\n66.65 %\n82.78 %\n86.56 %"
+  },
+  {
+    "objectID": "transformers4panel/index.html#the-entire-french-populations-health-history",
+    "href": "transformers4panel/index.html#the-entire-french-populations-health-history",
+    "title": "From Panel Data to Token Sequences",
+    "section": "The entire French population’s health history",
+    "text": "The entire French population’s health history\nData — SNDS (National Health Database): 70 million patients covered, 8 billion medical events, 7,204 token vocabulary:\n\n\n\nEvent family\nTokens\n\n\n\n\nSpecialty consultations\n83\n\n\nClinical procedures (CCAM)\n936\n\n\nMedications (ATC)\n704\n\n\nHospital diagnoses (ICD-10)\n3 275\n\n\nAdmissions, emergencies, deaths\n—\n\n\n\n\nIrregular timestamps: multiple events per day possible, or none for months"
+  },
+  {
+    "objectID": "transformers4panel/index.html#the-model-discovers-the-map-of-medicine-unsupervised",
+    "href": "transformers4panel/index.html#the-model-discovers-the-map-of-medicine-unsupervised",
+    "title": "From Panel Data to Token Sequences",
+    "section": "The model discovers the map of medicine — unsupervised",
+    "text": "The model discovers the map of medicine — unsupervised"
+  },
+  {
+    "objectID": "transformers4panel/index.html#zero-shot-predictions-rival-supervised-models",
+    "href": "transformers4panel/index.html#zero-shot-predictions-rival-supervised-models",
+    "title": "From Panel Data to Token Sequences",
+    "section": "Zero-shot predictions rival supervised models",
+    "text": "Zero-shot predictions rival supervised models\n\n\nTask (unseen during training): given a random point in a patient’s trajectory, predict whether a specific event occurs within 30 / 180 / 365 days.\nThree approaches compared\n\nNaïve baseline: logistic regression on age and gender only\nLogistic on embeddings: trained on 100k patients\nZero-shot: model’s output logits, no additional training at all\n\nEvaluated on 1 million held-out patients.\n\n\nAverage Precision Score — 365-day horizon\n\n\n\nEvent\nBaseline\nZero-shot\nLogReg emb.\n\n\n\n\nDialysis\n0.004\n0.82\n0.85\n\n\nChemotherapy\n0.01\n0.56\n0.64\n\n\nDeath\n0.20\n0.46\n0.63\n\n\nGP visit\n0.70\n0.83\n0.90\n\n\nNurse visit\n0.46\n0.53\n0.68\n\n\nHospitalization\n0.24\n0.35\n0.47\n\n\nEmergency\n0.21\n0.25\n0.35\n\n\nHeart failure\n0.04\n0.09\n0.12\n\n\n\n\n\n\n\n\nZero-shot rivals supervised (100k labels) for most events. History-driven events — dialysis (0.82), chemotherapy (0.56) — show the largest gains from an near-zero baseline. Unpredictable events (emergency, heart failure) remain hard but still improve."
+  },
+  {
+    "objectID": "transformers4panel/index.html#more-than-a-predictor-a-reusable-analytical-backbone",
+    "href": "transformers4panel/index.html#more-than-a-predictor-a-reusable-analytical-backbone",
+    "title": "From Panel Data to Token Sequences",
+    "section": "More than a predictor — a reusable analytical backbone",
+    "text": "More than a predictor — a reusable analytical backbone\nWhat we have shown\n✓ Sequence models handle high cardinality, long-range dependence, and irregular timing jointly — no classical method does\n✓ Trained on raw administrative data, they learn structured, semantically meaningful representations of individual histories\nThey are foundational:\n✓ These representations transfer to downstream tasks unseen during training, without retraining\n✓ The models are generative by construction !"
+  },
+  {
+    "objectID": "transformers4panel/index.html#references",
+    "href": "transformers4panel/index.html#references",
+    "title": "From Panel Data to Token Sequences",
+    "section": "References",
+    "text": "References\n\n\nD’Haultfoeuille, Xavier, and Alessandro Iaria. 2016. “A Convenient Method for the Estimation of the Multinomial Logit Model with Fixed Effects.” Economics Letters 141 (C): 77–79. https://doi.org/10.1016/j.econlet.2016.02.002.\n\n\nRust, John. 1988. “Statistical Models of Discrete Choice Processes.” Transportation Research Part B: Methodological 22 (2): 125–58. https://doi.org/https://doi.org/10.1016/0191-2615(88)90010-0.\n\n\nSchmidt, Robin M. 2019. Recurrent Neural Networks (RNNs): A Gentle Introduction and Overview. https://arxiv.org/abs/1912.05911.\n\n\nShmatko, Artem, Alexander Wolfgang Jung, Kumar Gaurav, et al. 2025. “Learning the Natural History of Human Disease with Generative Transformers.” Nature 647 (September): 248–56. https://doi.org/10.1038/s41586-025-09529-3.\n\n\nVaswani, Ashish, Noam Shazeer, Niki Parmar, et al. 2023. Attention Is All You Need. https://arxiv.org/abs/1706.03762."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#agenda",
+    "href": "accuracy2trust/index.html#agenda",
+    "title": "From Accuracy to Trust",
+    "section": "Agenda",
+    "text": "Agenda\n\nThe accuracy illusion — why 95% is not enough\nPillar I — measuring what matters: calibration & risk-coverage\nPillar II — building for uncertainty: multi-level heads & label attention\nPractical take-aways"
+  },
+  {
+    "objectID": "accuracy2trust/index.html#a-model-that-is-right-95-of-the-time",
+    "href": "accuracy2trust/index.html#a-model-that-is-right-95-of-the-time",
+    "title": "From Accuracy to Trust",
+    "section": "A model that is right 95% of the time",
+    "text": "A model that is right 95% of the time\n\nThe setting\nA deep learning model codes job descriptions into ISCO-08 occupations.\n\nTraining accuracy: 95.3 %\nTest accuracy: 94.8 %\nSounds production-ready.\n\n\n\nThe reality — at INSEE’s scale\n\n\n\nVolume\nErrors\n\n\n\n\n100 000 records / year\n5 200 wrong codes\n\n\nSent automatically, unreviewed\nall 5 200\n\n\nStatistician detects the pattern\nmonths later\n\n\n\n\n\n\n\n\nThe model does not know when it is wrong. A confident wrong prediction is the worst failure mode in official statistics."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#two-very-different-5-errors",
+    "href": "accuracy2trust/index.html#two-very-different-5-errors",
+    "title": "From Accuracy to Trust",
+    "section": "Two very different 5 % errors",
+    "text": "Two very different 5 % errors\n\nModel A — confused but honest\nPredicts Nurse with probability 0.52 when the true code is Midwife.\n→ A threshold of 0.7 catches this. → The record goes to a human reviewer. → No damage done.\n\n\nModel B — confident and wrong\nPredicts Software developer with probability 0.97 when the true code is Data entry clerk.\n→ No threshold catches this. → Published automatically. → Systematic bias in employment statistics.\n\n\n\n\n\nAccuracy measures how often we are right. It says nothing about when we know we are right. That gap is what we need to close."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#what-we-actually-need-from-a-probability",
+    "href": "accuracy2trust/index.html#what-we-actually-need-from-a-probability",
+    "title": "From Accuracy to Trust",
+    "section": "What we actually need from a probability",
+    "text": "What we actually need from a probability\nA classifier outputs P(class | text). We want this number to mean something:\n\nAmong all predictions made with confidence 80 %, exactly 80 % should be correct.\n\nThis property is called calibration. A well-calibrated model turns confidence into a reliable operational signal.\n\nCalibration ≠ Accuracy. A model can be highly accurate yet badly miscalibrated — and vice-versa. Modern deep learning tends to be overconfident."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#the-reliability-diagram",
+    "href": "accuracy2trust/index.html#the-reliability-diagram",
+    "title": "From Accuracy to Trust",
+    "section": "The reliability diagram",
+    "text": "The reliability diagram\nPredicted probability (confidence bins)\n0.1   0.2   0.3   0.4   0.5   0.6   0.7   0.8   0.9   1.0\n |     |     |     |     |     |     |     |     |     |\n ·                                         ▲▲▲▲▲▲▲▲▲  ← overconfident model\n ·                                   ·····              ← perfect calibration\n ·                           ·····\n ·                   ·····\n ·           ·····\n ·   ·····\n\nPerfect calibration: actual accuracy = predicted confidence (diagonal line)\nOverconfident model: bars above the diagonal — the model is more sure than it should be\nECE (Expected Calibration Error): average gap between confidence and accuracy, weighted by bin size — one number to compare models\n\n\nECE gives a single diagnostic number. A well-calibrated model has ECE close to 0. Post-hoc techniques (temperature scaling, isotonic regression) can correct miscalibration without retraining."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#from-calibration-to-decisions-riskcoverage-curves",
+    "href": "accuracy2trust/index.html#from-calibration-to-decisions-riskcoverage-curves",
+    "title": "From Accuracy to Trust",
+    "section": "From calibration to decisions: risk–coverage curves",
+    "text": "From calibration to decisions: risk–coverage curves\nOnce probabilities are calibrated, we can set a confidence threshold τ:\n\nAbove τ → automate the prediction\nBelow τ → send to human review\n\n\nCoverage = share of records automated\nRisk = error rate among automated records\nThese two quantities move in opposite directions as τ varies.\n\n\nRisk\n |\n |  ·  (low τ — automate everything)\n |    ··\n |      ···\n |         ····\n |              ·····  (high τ — only sure cases)\n |_____________________________ Coverage\n\n\n\n\n\nThe risk–coverage curve is the NSI’s decision tool. It answers: “If we accept a 1 % error rate, what share of our volume can we automate?” — a question accuracy cannot answer."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#comparing-models-with-riskcoverage-curves",
+    "href": "accuracy2trust/index.html#comparing-models-with-riskcoverage-curves",
+    "title": "From Accuracy to Trust",
+    "section": "Comparing models with risk–coverage curves",
+    "text": "Comparing models with risk–coverage curves\nA model that dominates another sits lower and to the right on the curve — lower risk for the same coverage.\nKey operational question: where is your institutional risk tolerance?\n\nSet a maximum acceptable error rate (e.g. 0.5 %)\nRead off the maximum achievable automation rate\nCompare models at that operating point — not on accuracy alone\n\n\nPractical workflow: train → calibrate → plot risk-coverage → choose τ consistent with your quality constraints → monitor stability after deployment."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#hierarchical-classifications-demand-hierarchical-models",
+    "href": "accuracy2trust/index.html#hierarchical-classifications-demand-hierarchical-models",
+    "title": "From Accuracy to Trust",
+    "section": "Hierarchical classifications demand hierarchical models",
+    "text": "Hierarchical classifications demand hierarchical models\nISCO, NACE, CPA — all share the same structure: a tree.\n\nLevel 1 (Major groups): 10 categories — easy\nLevel 2 (Sub-major groups): 43 categories — moderate\nLevel 3 (Minor groups): 130 categories — hard\nLevel 4 (Unit groups): 436 categories — very hard\n\nStandard approach: one softmax head at the finest level.\nThe problem: when the model is uncertain at level 4, it often already knows the right level-2 code. Forcing a fine-grained wrong answer wastes that signal.\n\nInsight: uncertainty should trigger a graceful degradation to a coarser but correct code — not a confident wrong fine code."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#multi-level-prediction-heads",
+    "href": "accuracy2trust/index.html#multi-level-prediction-heads",
+    "title": "From Accuracy to Trust",
+    "section": "Multi-level prediction heads",
+    "text": "Multi-level prediction heads\n\nArchitecture\nOne shared encoder (transformer / BiLSTM) → One prediction head per level of the hierarchy\nAt inference time:\n\nCheck confidence at level 4\nIf below τ₄, fall back to level 3 head\nIf below τ₃, fall back to level 2 head\n…\n\n\n\nBenefits\n\nPartial automation: fine codes where confident, coarser codes otherwise\nLimits catastrophic errors (wrong fine code that contradicts the right major group)\nA hierarchy-aware calibration loss penalises cross-branch errors more heavily than within-branch confusion\n\n\n\n\n\n\nThe fallback mechanism transforms uncertainty from an obstacle into a feature: we always give the most precise answer we can trust."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#label-attention-letting-the-model-read-the-code-definition",
+    "href": "accuracy2trust/index.html#label-attention-letting-the-model-read-the-code-definition",
+    "title": "From Accuracy to Trust",
+    "section": "Label attention — letting the model read the code definition",
+    "text": "Label attention — letting the model read the code definition\nStandard classifiers map text → label index. The label is just a number.\nLabel attention treats each ISCO code as text too:\n\"Software developer: designs, builds and tests computer software systems...\"\nA cross-attention layer computes similarity between the job description embedding and each label description embedding at every transformer layer.\n\nWhy it helps\n\nThe model learns what discriminates codes, not just which index wins\nRare codes benefit from their textual definition even with few training examples\nAttention weights are directly interpretable\n\n\n\nxAI bonus\nAttribution methods (Layer Integrated Gradients via Captum) can highlight which tokens in the input drove the prediction toward a specific label — directly supporting human reviewers"
+  },
+  {
+    "objectID": "accuracy2trust/index.html#putting-the-two-pillars-together",
+    "href": "accuracy2trust/index.html#putting-the-two-pillars-together",
+    "title": "From Accuracy to Trust",
+    "section": "Putting the two pillars together",
+    "text": "Putting the two pillars together\n\nPillar I — Right metrics\n\nReliability diagram + ECE: diagnose calibration\nPost-hoc calibration: fix it without retraining\nRisk-coverage curve: choose your operating point\nMonitor drift: re-check after each production cycle\n\n\n\nPillar II — Right architecture\n\nMulti-level heads: graceful degradation under uncertainty\nHierarchy-aware loss: better-calibrated fine-level probabilities\nLabel attention: richer representations + explainability\nConformal prediction: formal coverage guarantees on top\n\n\n\n\n\n\nThe combination: an architecture that knows what it knows, metrics that reveal when it doesn’t, and curves that let managers set the acceptable risk — before going live, not after the damage is done."
+  },
+  {
+    "objectID": "accuracy2trust/index.html#what-to-bring-back-to-your-nsi",
+    "href": "accuracy2trust/index.html#what-to-bring-back-to-your-nsi",
+    "title": "From Accuracy to Trust",
+    "section": "What to bring back to your NSI",
+    "text": "What to bring back to your NSI\nDo not deploy on accuracy alone.\n\n\n\n\n\n\n\nQuestion\nTool\n\n\n\n\nAre my probabilities meaningful?\nReliability diagram + ECE\n\n\nCan I fix miscalibration cheaply?\nTemperature scaling / isotonic regression\n\n\nWhat automation rate can I afford?\nRisk-coverage curve at your risk tolerance\n\n\nHow to handle hierarchical codes?\nMulti-level heads + confidence fallback\n\n\nHow to explain a prediction to a reviewer?\nLabel attention + Layer Integrated Gradients\n\n\nHow to monitor after deployment?\nTrack ECE drift + risk-coverage stability\n\n\n\n\nThe goal is not to replace human coders. It is to automate confidently what the model knows, and flag honestly what it does not."
+  }
+]
