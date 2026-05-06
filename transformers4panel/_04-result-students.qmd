@@ -1,0 +1,49 @@
+# Result I — Student Pathways {.section}
+
+## 3 million students, 940 course-types, one GRU
+
+**Data**
+
+- ~3 million students, *baccalauréat* cohorts 2017–2022
+- ~10 million enrollment records
+- Vocabulary: **940 course-types** (L1 bachelor → PhD)
+- Sequence length: up to **8** (one per academic year)
+- Covariates: gender, age, bac grade & specialty, parental SPC, school Social Positioning Index, geographic origin
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+At this scale and vocabulary size (940 classes), standard regression, ensemble, and boosting methods were **not trainable**. Sequence models are the only viable option.
+:::
+
+## Pipeline
+
+![](images/rnn_diagram_slide.svg){width=90% fig-align="center"}
+
+## Predictive power
+
+
+![](images/accperpos.svg){width=70% fig-align="center"}
+
+::: {style="font-size: 0.8em;"}
+| Model | Top-1 Accuracy | Top-3 Accuracy | Top-5 Accuracy | Top-1 Acc. excl. 1st enrol. pred. | Top-3 Acc. excl. 1st enrol. pred. | Top-5 Acc. excl. 1st enrol. pred. |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
+| Bigram model | N.A. | N.A. | N.A. | 62.34 % | 79.65 % | 83.86 % |
+| RNN (GRU) | 54.01 % | 71.24 % | 77.10 % | **66.65 %** | **82.78 %** | **86.56 %** |
+:::
+
+---
+
+
+::: {.warning-box}
+**Inertia dominates.** Most predictive signal comes from the previous enrollment alone. The GRU's marginal accuracy gain is modest.
+:::
+
+::: {.highlight-box}
+**Why the model still matters:**
+
+- **Covariates:** social background, school SPI, ... feed into predictions and enable sensitivity analyses (effect of social origin on transition probabilities)
+- **First enrollment:** covariates allow predicting it, unlike the bigram
+- **Embeddings:** hidden states **h** are reusable trajectory representations for clustering, causal matching, or outcome prediction (dropout, labor market)
+:::

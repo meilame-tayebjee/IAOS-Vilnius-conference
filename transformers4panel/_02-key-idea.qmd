@@ -1,0 +1,21 @@
+# The Key Idea {.section}
+
+## Language models solved those issues for text...
+
+A sentence is a sequence of **tokens** drawn from a large vocabulary.
+
+Deep-learning language models learn directly from data:
+
+- how tokens relate to one another, via **embeddings**, without manual feature engineering
+- scaling to millions of entries and vocabularies of thousands
+- to model **long-range dependencies**: context from early tokens shapes predictions arbitrarily far ahead
+
+## ... and categorical panel data resembles text!
+
+| NLP concept | Panel data equivalent |
+|---|---|
+| Word / Token | Event type (course, medical code…) |
+| Sentence | Individual trajectory |
+| Vocabulary | Set of all possible event types |
+| Next-word prediction | Next-event prediction |
+| Sentence embedding | Trajectory summary vector |

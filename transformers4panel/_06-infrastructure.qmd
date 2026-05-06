@@ -1,0 +1,40 @@
+# A New Infrastructure for NSIs {.section}
+
+## More than a predictor — a reusable analytical backbone
+
+**What we have shown**
+
+✓ Sequence models handle high cardinality, long-range dependence, and irregular timing **jointly** — no classical method does
+
+✓ Trained on raw administrative data, they learn **structured, semantically meaningful representations** of individual histories
+
+**They are foundational:**
+
+✓ These representations **transfer to downstream tasks unseen during training**, without retraining
+
+✓ The models are **generative** by construction !
+
+---
+
+**The institutional opportunity**
+
+One model, pre-trained on a national register, serves as a **shared backbone**:
+
+- Policy evaluation and associative studies
+- Subgroup characterisation and matching
+- Control variables for causal inference
+- **Synthetic data generation**
+
+**One model. Many research questions. Lower barrier to entry for research teams.**
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+**Governance is not optional.**
+
+- Documented training data & versioning
+- Full auditability of model decisions
+- Strict access controls on individual-level embeddings
+- Same standards apply to any generated synthetic data
+:::

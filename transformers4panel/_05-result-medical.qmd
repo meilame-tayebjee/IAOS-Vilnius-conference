@@ -1,0 +1,81 @@
+# Result II — Medical Pathways {.section}
+
+## The entire French population's health history
+
+**Data — SNDS (National Health Database)**: **70 million** patients covered, **8 billion** medical events, **7,204 token** vocabulary:
+
+| Event family | Tokens |
+|---|:-:|
+| Specialty consultations | 83 |
+| Clinical procedures (CCAM) | 936 |
+| Medications (ATC) | 704 |
+| Hospital diagnoses (ICD-10) | 3 275 |
+| Admissions, emergencies, deaths | — |
+
+- Irregular timestamps: multiple events per day possible, or none for months
+
+---
+
+**Model**
+
+- **Transformer** — right fit for large scale + irregular time
+- Time-aware: Time2Vec embeddings + Delphi loss
+- Jointly predicts at each step:
+  - **Type** of the next medical event
+  - **Expected waiting time** until it occurs
+- Gender and birth year prepended as context
+
+## The model discovers the map of medicine — unsupervised
+
+![](images/embedding_space.svg){width=120% fig-align="center"}
+
+---
+
+- **Clinically coherent clusters** form purely from trajectory co-occurrence
+- **Higher-order structure** is preserved: gynecology sits adjacent to senology;
+  emergency neighbors trauma codes
+- The model has internalized the **logic of care pathways**, not merely memorized token pairs
+
+::: {.highlight-box}
+This structured geometry emerges without any supervision: it is entirely a product of learning to predict the next event in 8 billion medical records.
+:::
+
+## Zero-shot predictions rival supervised models
+
+::: {style="font-size: 0.8em;"}
+
+::: {.col-left}
+**Task (unseen during training):** given a random point in a patient's trajectory, predict whether a specific event occurs within 30 / 180 / 365 days.
+
+**Three approaches compared**
+
+- **Naïve baseline:** logistic regression on age and gender only
+- **Logistic on embeddings:** trained on **100k** patients
+- **Zero-shot:** model's output logits, no additional training at all
+
+Evaluated on **1 million** held-out patients.
+:::
+
+::: {.col-right}
+**Average Precision Score — 365-day horizon**
+
+| Event | Baseline | Zero-shot | LogReg emb. |
+|:---|---:|---:|---:|
+| Dialysis | 0.004 | **0.82** | **0.85** |
+| Chemotherapy | 0.01 | **0.56** | **0.64**|
+| Death | 0.20 | **0.46** | **0.63** |
+| GP visit | 0.70 | **0.83** | **0.90** |
+| Nurse visit | 0.46 | **0.53** | **0.68** |
+| Hospitalization | 0.24 | **0.35** | **0.47** |
+| Emergency | 0.21 | **0.25** | **0.35** |
+| Heart failure | 0.04 | **0.09** | **0.12** |
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+Zero-shot rivals supervised (100k labels) for most events. History-driven events — dialysis (0.82), chemotherapy (0.56) — show the largest gains from an near-zero baseline. Unpredictable events (emergency, heart failure) remain hard but still improve.
+:::
+
+:::
