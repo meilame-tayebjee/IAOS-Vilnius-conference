@@ -4,7 +4,7 @@ subtitle: "NLP-inspired Machine Learning for Longitudinal Categorical Data"
 author:
   - name: "Meilame Tayebjee"
     affiliation: "Insee"
-date: "May 2026"
+date: "12 May 2026"
 format: iaos-vilnius-revealjs
 bibliography: references.bib
 ---
