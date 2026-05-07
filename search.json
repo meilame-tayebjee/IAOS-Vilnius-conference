@@ -119,6 +119,27 @@
     "text": "References\n\n\nD’Haultfoeuille, Xavier, and Alessandro Iaria. 2016. “A Convenient Method for the Estimation of the Multinomial Logit Model with Fixed Effects.” Economics Letters 141 (C): 77–79. https://doi.org/10.1016/j.econlet.2016.02.002.\n\n\nRust, John. 1988. “Statistical Models of Discrete Choice Processes.” Transportation Research Part B: Methodological 22 (2): 125–58. https://doi.org/https://doi.org/10.1016/0191-2615(88)90010-0.\n\n\nSchmidt, Robin M. 2019. Recurrent Neural Networks (RNNs): A Gentle Introduction and Overview. https://arxiv.org/abs/1912.05911.\n\n\nShmatko, Artem, Alexander Wolfgang Jung, Kumar Gaurav, et al. 2025. “Learning the Natural History of Human Disease with Generative Transformers.” Nature 647 (September): 248–56. https://doi.org/10.1038/s41586-025-09529-3.\n\n\nVaswani, Ashish, Noam Shazeer, Niki Parmar, et al. 2023. Attention Is All You Need. https://arxiv.org/abs/1706.03762."
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "2026 IAOS Conference - Vilnius - Meilame Tayebjee",
+    "section": "",
+    "text": "I’m a French civil servant of the Statistician-Economist corps, currently working as a data scientist at the AI and Data Science lab of Insee, France’s national statistical institute. My open-source projects include torchTextClassifiers (a PyTorch toolkit for text classification), MLOps pipeline design for automatic NACE coding, satellite imagery analysis for census monitoring, and an agentic framework for hierarchical nomenclature reasoning. I also contribute to AIML4OS, a EU initiative fostering AI/ML adoption across National Statistical Institutes, notably through an MLOps tutorial.\nAlongside this, I’m a PhD candidate at Crest (ENSAE/CNRS) and Inria SODA, in the Graph4Health project - advised by Guillaume Lecué and Gaël Varoquaux. I’m working on Transformer-based representations of medical pathways for causal inference and policy evaluation using the French national healthcare database.\n\n\n CV ·  GitHub ·  LinkedIn"
+  },
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "2026 IAOS Conference - Vilnius - Meilame Tayebjee",
+    "section": "",
+    "text": "I’m a French civil servant of the Statistician-Economist corps, currently working as a data scientist at the AI and Data Science lab of Insee, France’s national statistical institute. My open-source projects include torchTextClassifiers (a PyTorch toolkit for text classification), MLOps pipeline design for automatic NACE coding, satellite imagery analysis for census monitoring, and an agentic framework for hierarchical nomenclature reasoning. I also contribute to AIML4OS, a EU initiative fostering AI/ML adoption across National Statistical Institutes, notably through an MLOps tutorial.\nAlongside this, I’m a PhD candidate at Crest (ENSAE/CNRS) and Inria SODA, in the Graph4Health project - advised by Guillaume Lecué and Gaël Varoquaux. I’m working on Transformer-based representations of medical pathways for causal inference and policy evaluation using the French national healthcare database.\n\n\n CV ·  GitHub ·  LinkedIn"
+  },
+  {
+    "objectID": "index.html#presentations-2026-iaos-conference",
+    "href": "index.html#presentations-2026-iaos-conference",
+    "title": "2026 IAOS Conference - Vilnius - Meilame Tayebjee",
+    "section": "Presentations — 2026 IAOS Conference",
+    "text": "Presentations — 2026 IAOS Conference"
+  },
+  {
     "objectID": "presentations/accuracy2trust/index.html#agenda",
     "href": "presentations/accuracy2trust/index.html#agenda",
     "title": "From Accuracy to Trust",
