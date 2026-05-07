@@ -27,4 +27,4 @@ format: iaos-vilnius-revealjs
 
 ## 
 
-![](QRcodeSite.png){width=100% fig-align="center"}
+![](../../assets/QRcodeSite.png){width=100% fig-align="center"}

@@ -9,4 +9,18 @@ page-layout: full
 toc: false
 ---
 
+## About
+
+<div style="text-align: justify;">
+I'm a French civil servant of the Statistician-Economist corps, currently working as a data scientist at the [AI and Data Science lab](https://github.com/InseeFrLab) of [Insee](https://www.insee.fr/), France's national statistical institute. My open-source projects include [torchTextClassifiers](https://github.com/InseeFrLab/torchTextClassifiers) (a PyTorch toolkit for text classification), MLOps pipeline design for [automatic NACE coding](https://github.com/orgs/InseeFrLab/teams/codification-ape/repositories), [satellite imagery analysis](https://github.com/orgs/InseeFrLab/teams/satellite-images) for census monitoring, and [an agentic framework for hierarchical nomenclature reasoning](https://github.com/InseeFrLab/GRAAL). I also contribute to [AIML4OS](https://cros.ec.europa.eu/dashboard/aiml4os), a EU initiative fostering AI/ML adoption across National Statistical Institutes, notably through an [MLOps tutorial](https://github.com/AIML4OS/WP10_Cluster4_MLOps).
+
+Alongside this, I'm a PhD candidate at [Crest](https://crest.science/) (ENSAE/CNRS) and [Inria SODA](https://team.inria.fr/soda/), in the [Graph4Health](https://guillaume-lecue.faculty.essec.edu/graph4health) project - advised by [Guillaume Lecué](https://guillaume-lecue.faculty.essec.edu/) and [Gaël Varoquaux](https://gael-varoquaux.info/). I'm working on Transformer-based representations of medical pathways for causal inference and policy evaluation using the French national healthcare database.
+</div>
+
+<div style="text-align: center; margin-top: 0.5em;">
+[{{< fa file-lines >}} CV](assets/CV_Tayebjee.pdf) · [{{< fa brands github >}} GitHub](https://github.com/meilame-tayebjee) · [{{< fa brands linkedin >}} LinkedIn](https://www.linkedin.com/in/meilame-tayebjee)
+</div>
+
+---
+
 ## Presentations — [2026 IAOS Conference](https://www.isi-next.org/conferences/iaos-2026/)
