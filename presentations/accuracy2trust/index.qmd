@@ -1,0 +1,30 @@
+---
+title: "From Accuracy to Trust"
+subtitle: "Practical Methods for Uncertainty-Aware Automatic Coding with ML and xAI"
+author:
+  - name: "Meilame Tayebjee"
+    affiliation: "Institut national de la statistique et des études économiques (INSEE)"
+date: "12 May 2026"
+format: iaos-vilnius-revealjs
+---
+
+## Agenda {.toc}
+
+1. The accuracy illusion — why 95% is not enough
+2. Pillar I — measuring what matters: calibration & risk-coverage
+3. Pillar II — building for uncertainty: multi-level heads & label attention
+4. Practical take-aways
+
+{{< include _01-accuracy-illusion.qmd >}}
+
+{{< include _02-pillar1-metrics.qmd >}}
+
+{{< include _03-pillar2-architecture.qmd >}}
+
+{{< include _04-takeaways.qmd >}}
+
+{{< include _05-closing.qmd >}}
+
+## 
+
+![](QRcodeSite.png){width=100% fig-align="center"}

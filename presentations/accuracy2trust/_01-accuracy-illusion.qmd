@@ -1,0 +1,62 @@
+# The Accuracy Illusion {.section}
+
+## A model that is right 95% of the time
+
+::: {.col-left}
+**The setting**
+
+A deep learning model automatically codes job descriptions into ISCO-08 occupations **if confidence is high enough**, otherwise it is sent to manual annotation.
+
+- Training accuracy: **95.3 %**
+- Test accuracy: **94.8 %**
+- Sounds production-ready.
+:::
+
+::: {.col-right}
+**The reality — at INSEE's scale**
+
+| Volume | Errors |
+|-------:|-------:|
+| 100 000 records / year | **5 200 wrong codes** |
+| Sent automatically, unreviewed | all 5 200 |
+| Statistician detects the pattern | **months later** |
+
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+**The model does not know when it is wrong.** A confident wrong prediction is the worst failure mode in official statistics.
+:::
+
+## Two very different 5 % errors
+
+::: {.col-left}
+**Model A — confused but honest**
+
+Predicts *Nurse* with probability **0.52**
+when the true code is *Midwife*.
+
+→ A threshold of 0.7 catches this.
+→ The record goes to a human reviewer.
+→ **No damage done.**
+:::
+
+::: {.col-right}
+**Model B — confident and wrong**
+
+Predicts *Software developer* with probability **0.97**
+when the true code is *Data entry clerk*.
+
+→ No threshold catches this.
+→ Published automatically.
+→ **Systematic bias in employment statistics.**
+:::
+
+::: {.clearfix}
+:::
+
+::: {.highlight-box}
+Accuracy measures *how often* we are right. It says nothing about *when we know we are right*. That gap is what we need to close.
+:::

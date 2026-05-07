@@ -1,0 +1,18 @@
+# Take-Aways {.section}
+
+## What to bring back to your NSI
+
+**Do not deploy on accuracy alone.**
+
+| Question | Tool |
+|---|---|
+| Are my probabilities meaningful? | Reliability diagram + ECE |
+| Can I fix miscalibration cheaply? | Temperature scaling / isotonic regression |
+| What automation rate can I afford? | Risk-coverage curve at your risk tolerance |
+| How to handle hierarchical codes? | Multi-level heads + confidence fallback |
+| How to explain a prediction to a reviewer? | Label attention + Layer Integrated Gradients |
+| How to monitor after deployment? | Track ECE drift + risk-coverage stability |
+
+::: {.highlight-box}
+**The goal is to automate confidently what the model knows, and flag honestly what it does not.**
+:::

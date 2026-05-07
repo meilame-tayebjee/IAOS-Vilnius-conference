@@ -5,6 +5,6 @@ date: "2026-05-12"
 author: "Meilame Tayebjee (INSEE)"
 slides:
   text: Slides
-  url: /accuracy2trust/index.html
+  url: /presentations/accuracy2trust/index.html
 order: 2
 ---

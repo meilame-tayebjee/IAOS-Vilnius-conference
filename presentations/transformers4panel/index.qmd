@@ -31,3 +31,7 @@ bibliography: references.bib
 {{< include _06-infrastructure.qmd >}}
 
 {{< include _07-closing.qmd >}}
+
+## 
+
+![](QRcodeSite.png){width=100% fig-align="center"}

@@ -3,12 +3,12 @@ project:
   render:
     - index.qmd
     - cards/*.qmd
-    - accuracy2trust/index.qmd
-    - transformers4panel/index.qmd
+    - presentations/accuracy2trust/index.qmd
+    - presentations/transformers4panel/index.qmd
 
 website:
   page-navigation: true
-  title: "IAOS Vilnius 2026 — Presentations"
+  title: "2026 IAOS Conference - Vilnius"
   site-url: https://meilame-tayebjee.github.io/IAOS-Vilnius-conference
   repo-url: https://github.com/meilame-tayebjee/IAOS-Vilnius-conference
   repo-branch: main
