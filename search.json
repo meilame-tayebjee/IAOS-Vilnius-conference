@@ -130,7 +130,7 @@
     "href": "accuracy2trust/index.html#a-model-that-is-right-95-of-the-time",
     "title": "From Accuracy to Trust",
     "section": "A model that is right 95% of the time",
-    "text": "A model that is right 95% of the time\n\nThe setting\nA deep learning model codes job descriptions into ISCO-08 occupations.\n\nTraining accuracy: 95.3 %\nTest accuracy: 94.8 %\nSounds production-ready.\n\n\n\nThe reality — at INSEE’s scale\n\n\n\nVolume\nErrors\n\n\n\n\n100 000 records / year\n5 200 wrong codes\n\n\nSent automatically, unreviewed\nall 5 200\n\n\nStatistician detects the pattern\nmonths later\n\n\n\n\n\n\n\n\nThe model does not know when it is wrong. A confident wrong prediction is the worst failure mode in official statistics."
+    "text": "A model that is right 95% of the time\n\nThe setting\nA deep learning model automatically codes job descriptions into ISCO-08 occupations if confidence is high enough, otherwise it is sent to manual annotation.\n\nTraining accuracy: 95.3 %\nTest accuracy: 94.8 %\nSounds production-ready.\n\n\n\nThe reality — at INSEE’s scale\n\n\n\nVolume\nErrors\n\n\n\n\n100 000 records / year\n5 200 wrong codes\n\n\nSent automatically, unreviewed\nall 5 200\n\n\nStatistician detects the pattern\nmonths later\n\n\n\n\n\n\n\n\nThe model does not know when it is wrong. A confident wrong prediction is the worst failure mode in official statistics."
   },
   {
     "objectID": "accuracy2trust/index.html#two-very-different-5-errors",
@@ -151,14 +151,14 @@
     "href": "accuracy2trust/index.html#the-reliability-diagram",
     "title": "From Accuracy to Trust",
     "section": "The reliability diagram",
-    "text": "The reliability diagram\nPredicted probability (confidence bins)\n0.1   0.2   0.3   0.4   0.5   0.6   0.7   0.8   0.9   1.0\n |     |     |     |     |     |     |     |     |     |\n ·                                         ▲▲▲▲▲▲▲▲▲  ← overconfident model\n ·                                   ·····              ← perfect calibration\n ·                           ·····\n ·                   ·····\n ·           ·····\n ·   ·····\n\nPerfect calibration: actual accuracy = predicted confidence (diagonal line)\nOverconfident model: bars above the diagonal — the model is more sure than it should be\nECE (Expected Calibration Error): average gap between confidence and accuracy, weighted by bin size — one number to compare models\n\n\nECE gives a single diagnostic number. A well-calibrated model has ECE close to 0. Post-hoc techniques (temperature scaling, isotonic regression) can correct miscalibration without retraining."
+    "text": "The reliability diagram\n\nPerfect calibration: actual accuracy = predicted confidence (diagonal line)\nOverconfident model: bars above the diagonal — the model is more sure than it should be\nECE (Expected Calibration Error): average gap between confidence and accuracy, weighted by bin size — one number to compare models\n\n\nECE gives a single diagnostic number. A well-calibrated model has ECE close to 0. Post-hoc techniques (temperature scaling, isotonic regression) can correct miscalibration without retraining.\n\n\nFor models based on PyTorch, the torch-uncertainty package offer several ready-to-use modules."
   },
   {
     "objectID": "accuracy2trust/index.html#from-calibration-to-decisions-riskcoverage-curves",
     "href": "accuracy2trust/index.html#from-calibration-to-decisions-riskcoverage-curves",
     "title": "From Accuracy to Trust",
     "section": "From calibration to decisions: risk–coverage curves",
-    "text": "From calibration to decisions: risk–coverage curves\nOnce probabilities are calibrated, we can set a confidence threshold τ:\n\nAbove τ → automate the prediction\nBelow τ → send to human review\n\n\nCoverage = share of records automated\nRisk = error rate among automated records\nThese two quantities move in opposite directions as τ varies.\n\n\nRisk\n |\n |  ·  (low τ — automate everything)\n |    ··\n |      ···\n |         ····\n |              ·····  (high τ — only sure cases)\n |_____________________________ Coverage\n\n\n\n\n\nThe risk–coverage curve is the NSI’s decision tool. It answers: “If we accept a 1 % error rate, what share of our volume can we automate?” — a question accuracy cannot answer."
+    "text": "From calibration to decisions: risk–coverage curves\nSet a confidence threshold τ: above τ → automate · below τ → human review\nCoverage = share of records automated\nRisk = error rate among automated records\nThese two quantities move in opposite directions as τ varies.\n\nThe risk–coverage curve answers: “If we accept a 1 % error rate, what share of our volume can we automate?” — a question accuracy cannot answer."
   },
   {
     "objectID": "accuracy2trust/index.html#comparing-models-with-riskcoverage-curves",
@@ -179,7 +179,7 @@
     "href": "accuracy2trust/index.html#multi-level-prediction-heads",
     "title": "From Accuracy to Trust",
     "section": "Multi-level prediction heads",
-    "text": "Multi-level prediction heads\n\nArchitecture\nOne shared encoder (transformer / BiLSTM) → One prediction head per level of the hierarchy\nAt inference time:\n\nCheck confidence at level 4\nIf below τ₄, fall back to level 3 head\nIf below τ₃, fall back to level 2 head\n…\n\n\n\nBenefits\n\nPartial automation: fine codes where confident, coarser codes otherwise\nLimits catastrophic errors (wrong fine code that contradicts the right major group)\nA hierarchy-aware calibration loss penalises cross-branch errors more heavily than within-branch confusion\n\n\n\n\n\n\nThe fallback mechanism transforms uncertainty from an obstacle into a feature: we always give the most precise answer we can trust."
+    "text": "Multi-level prediction heads\n\nArchitecture\nOne shared encoder → One prediction head per level of the hierarchy\nAt inference time:\n\nCheck confidence at level 4\nIf below τ₄, fall back to level 3 head\nIf below τ₃, fall back to level 2 head\n…\n\n\n\nBenefits\n\nPartial automation: fine codes where confident, coarser codes otherwise\nLimits catastrophic errors (wrong fine code that contradicts the right major group)\n“Smarter” models that understand the full hierarchy of the classification\n\n\n\n\n\n\nThe fallback mechanism transforms uncertainty from an obstacle into a feature: we always give the most precise answer we can trust."
   },
   {
     "objectID": "accuracy2trust/index.html#label-attention-letting-the-model-read-the-code-definition",

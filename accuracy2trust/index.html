@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Meilame Tayebjee">
-  <meta name="dcterms.date" content="2026-05-01">
+  <meta name="dcterms.date" content="2026-05-12">
   <title>IAOS Vilnius 2026 — Presentations – From Accuracy to Trust</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -146,7 +146,7 @@ Meilame Tayebjee
     </div>
 </div>
 
-  <p class="date">2026-05-01</p>
+  <p class="date">2026-05-12</p>
 </section>
 <section id="agenda" class="slide level2 toc scrollable">
 <h2>Agenda</h2>
@@ -166,7 +166,7 @@ Meilame Tayebjee
 <h2>A model that is right 95% of the time</h2>
 <div class="col-left">
 <p><strong>The setting</strong></p>
-<p>A deep learning model codes job descriptions into ISCO-08 occupations.</p>
+<p>A deep learning model automatically codes job descriptions into ISCO-08 occupations <strong>if confidence is high enough</strong>, otherwise it is sent to manual annotation.</p>
 <ul>
 <li>Training accuracy: <strong>95.3 %</strong></li>
 <li>Test accuracy: <strong>94.8 %</strong></li>
@@ -242,15 +242,6 @@ Meilame Tayebjee
 </section>
 <section id="the-reliability-diagram" class="slide level2">
 <h2>The reliability diagram</h2>
-<pre><code>Predicted probability (confidence bins)
-0.1   0.2   0.3   0.4   0.5   0.6   0.7   0.8   0.9   1.0
- |     |     |     |     |     |     |     |     |     |
- ·                                         ▲▲▲▲▲▲▲▲▲  ← overconfident model
- ·                                   ·····              ← perfect calibration
- ·                           ·····
- ·                   ·····
- ·           ·····
- ·   ·····</code></pre>
 <ul>
 <li><strong>Perfect calibration</strong>: actual accuracy = predicted confidence (diagonal line)</li>
 <li><strong>Overconfident model</strong>: bars above the diagonal — the model is <em>more sure than it should be</em></li>
@@ -259,36 +250,28 @@ Meilame Tayebjee
 <div class="highlight-box">
 <p>ECE gives a single diagnostic number. A well-calibrated model has ECE close to 0. Post-hoc techniques (temperature scaling, isotonic regression) can correct miscalibration <em>without retraining</em>.</p>
 </div>
+<div class="highlight-box">
+<p>For models based on PyTorch, the <a href="https://github.com/torch-uncertainty/torch-uncertainty"><code>torch-uncertainty</code></a> package offer several ready-to-use modules.</p>
+</div>
 </section>
+<section class="slide level2">
+
+
+<img data-src="images/calibration_curve_val.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
 <section id="from-calibration-to-decisions-riskcoverage-curves" class="slide level2">
 <h2>From calibration to decisions: risk–coverage curves</h2>
-<p>Once probabilities are calibrated, we can set a <strong>confidence threshold</strong> <em>τ</em>:</p>
-<ul>
-<li><strong>Above τ</strong> → automate the prediction</li>
-<li><strong>Below τ</strong> → send to human review</li>
-</ul>
-<div class="col-left">
+<p>Set a <strong>confidence threshold</strong> <em>τ</em>: <strong>above τ</strong> → automate · <strong>below τ</strong> → human review</p>
 <p><strong>Coverage</strong> = share of records automated</p>
 <p><strong>Risk</strong> = error rate among automated records</p>
-<p>These two quantities move in opposite directions as τ varies.</p>
-</div>
-<div class="col-right">
-<pre><code>Risk
- |
- |  ·  (low τ — automate everything)
- |    ··
- |      ···
- |         ····
- |              ·····  (high τ — only sure cases)
- |_____________________________ Coverage</code></pre>
-</div>
-<div class="clearfix">
-
-</div>
+<p>These two quantities move in <strong>opposite directions</strong> as τ varies.</p>
 <div class="highlight-box">
-<p><strong>The risk–coverage curve is the NSI’s decision tool.</strong> It answers: <em>“If we accept a 1 % error rate, what share of our volume can we automate?”</em> — a question accuracy cannot answer.</p>
+<p><strong>The risk–coverage curve</strong> answers: <em>“If we accept a 1 % error rate, what share of our volume can we automate?”</em> — a question accuracy cannot answer.</p>
 </div>
 </section>
+<section class="slide level2">
+
+
+<img data-src="images/histogram_and_risk_coverage_svg_v3.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
 <section id="comparing-models-with-riskcoverage-curves" class="slide level2">
 <h2>Comparing models with risk–coverage curves</h2>
 <p>A model that dominates another sits <strong>lower and to the right</strong> on the curve — lower risk <em>for the same coverage</em>.</p>
@@ -326,7 +309,7 @@ Meilame Tayebjee
 <h2>Multi-level prediction heads</h2>
 <div class="col-left">
 <p><strong>Architecture</strong></p>
-<p>One shared encoder (transformer / BiLSTM) → <strong>One prediction head per level of the hierarchy</strong></p>
+<p>One shared encoder → <strong>One prediction head per level of the hierarchy</strong></p>
 <p>At inference time:</p>
 <ol type="1">
 <li>Check confidence at level 4</li>
@@ -340,7 +323,7 @@ Meilame Tayebjee
 <ul>
 <li>Partial automation: fine codes where confident, coarser codes otherwise</li>
 <li>Limits catastrophic errors (wrong fine code that contradicts the right major group)</li>
-<li>A <strong>hierarchy-aware calibration loss</strong> penalises cross-branch errors more heavily than within-branch confusion</li>
+<li>“Smarter” models that understand the full hierarchy of the classification</li>
 </ul>
 </div>
 <div class="clearfix">
@@ -350,6 +333,10 @@ Meilame Tayebjee
 <p>The fallback mechanism transforms uncertainty from an obstacle into a feature: we always give the <em>most precise answer we can trust</em>.</p>
 </div>
 </section>
+<section class="slide level2">
+
+
+<img data-src="images/multilevel_full_slide_transparent.svg" class="r-stretch"></section>
 <section id="label-attention-letting-the-model-read-the-code-definition" class="slide level2">
 <h2>Label attention — letting the model read the code definition</h2>
 <p>Standard classifiers map text → label index. The label is just a number.</p>
