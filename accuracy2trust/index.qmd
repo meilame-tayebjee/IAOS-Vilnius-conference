@@ -4,7 +4,7 @@ subtitle: "Practical Methods for Uncertainty-Aware Automatic Coding with ML and 
 author:
   - name: "Meilame Tayebjee"
     affiliation: "Institut national de la statistique et des études économiques (INSEE)"
-date: "May 2026"
+date: "12 May 2026"
 format: iaos-vilnius-revealjs
 ---
 
@@ -22,7 +22,7 @@ format: iaos-vilnius-revealjs
 ::: {.col-left}
 **The setting**
 
-A deep learning model codes job descriptions into ISCO-08 occupations.
+A deep learning model automatically codes job descriptions into ISCO-08 occupations **if confidence is high enough**, otherwise it is sent to manual annotation.
 
 - Training accuracy: **95.3 %**
 - Test accuracy: **94.8 %**
@@ -95,18 +95,6 @@ This property is called **calibration**. A well-calibrated model turns confidenc
 
 ## The reliability diagram
 
-```
-Predicted probability (confidence bins)
-0.1   0.2   0.3   0.4   0.5   0.6   0.7   0.8   0.9   1.0
- |     |     |     |     |     |     |     |     |     |
- ·                                         ▲▲▲▲▲▲▲▲▲  ← overconfident model
- ·                                   ·····              ← perfect calibration
- ·                           ·····
- ·                   ·····
- ·           ·····
- ·   ·····
-```
-
 - **Perfect calibration**: actual accuracy = predicted confidence (diagonal line)
 - **Overconfident model**: bars above the diagonal — the model is *more sure than it should be*
 - **ECE (Expected Calibration Error)**: average gap between confidence and accuracy, weighted by bin size — one number to compare models
@@ -115,40 +103,32 @@ Predicted probability (confidence bins)
 ECE gives a single diagnostic number. A well-calibrated model has ECE close to 0. Post-hoc techniques (temperature scaling, isotonic regression) can correct miscalibration *without retraining*.
 :::
 
+::: {.highlight-box}
+For models based on PyTorch, the [``torch-uncertainty``](https://github.com/torch-uncertainty/torch-uncertainty) package offer several ready-to-use modules.
+:::
+
+---
+
+![](images/calibration_curve_val.png){width=90% fig-align="center"}
+
 ## From calibration to decisions: risk–coverage curves
 
-Once probabilities are calibrated, we can set a **confidence threshold** *τ*:
+Set a **confidence threshold** *τ*: **above τ** → automate · **below τ** → human review
 
-- **Above τ** → automate the prediction
-- **Below τ** → send to human review
-
-::: {.col-left}
 **Coverage** = share of records automated
 
 **Risk** = error rate among automated records
 
-These two quantities move in opposite directions as τ varies.
-:::
-
-::: {.col-right}
-```
-Risk
- |
- |  ·  (low τ — automate everything)
- |    ··
- |      ···
- |         ····
- |              ·····  (high τ — only sure cases)
- |_____________________________ Coverage
-```
-:::
-
-::: {.clearfix}
-:::
+These two quantities move in **opposite directions** as τ varies.
 
 ::: {.highlight-box}
-**The risk–coverage curve is the NSI's decision tool.** It answers: *"If we accept a 1 % error rate, what share of our volume can we automate?"* — a question accuracy cannot answer.
+**The risk–coverage curve** answers: *"If we accept a 1 % error rate, what share of our volume can we automate?"* — a question accuracy cannot answer.
 :::
+
+---
+
+![](images/histogram_and_risk_coverage_svg_v3.svg){width=100% fig-align="center"}
+
 
 ## Comparing models with risk–coverage curves
 
@@ -188,7 +168,7 @@ ISCO, NACE, CPA — all share the same structure: a tree.
 ::: {.col-left}
 **Architecture**
 
-One shared encoder (transformer / BiLSTM)
+One shared encoder
 → **One prediction head per level of the hierarchy**
 
 At inference time:
@@ -199,12 +179,13 @@ At inference time:
 4. ...
 :::
 
+
 ::: {.col-right}
 **Benefits**
 
 - Partial automation: fine codes where confident, coarser codes otherwise
 - Limits catastrophic errors (wrong fine code that contradicts the right major group)
-- A **hierarchy-aware calibration loss** penalises cross-branch errors more heavily than within-branch confusion
+- "Smarter" models that understand the full hierarchy of the classification
 :::
 
 ::: {.clearfix}
@@ -213,6 +194,12 @@ At inference time:
 ::: {.highlight-box}
 The fallback mechanism transforms uncertainty from an obstacle into a feature: we always give the *most precise answer we can trust*.
 :::
+
+---
+
+![](images/multilevel_full_slide_transparent.svg)
+
+
 
 ## Label attention — letting the model read the code definition
 
