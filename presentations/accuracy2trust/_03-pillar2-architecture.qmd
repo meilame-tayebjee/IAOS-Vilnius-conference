@@ -55,7 +55,7 @@ The fallback mechanism transforms uncertainty from an obstacle into a feature: w
 
 
 
-## Label attention: towards xAI
+## Label attention: towards xAI {.scrollable}
 
 
 **Label attention**: each ISCO code gets its own embedding vector (learned matrix of size $n_{labels} \times d_{embed}$). A **cross-attention layer** uses label embeddings as *queries* and token embeddings as *keys/values*, producing one label-conditioned sequence embedding per ISCO code, each scored by a linear probe.
